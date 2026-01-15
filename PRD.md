@@ -102,7 +102,7 @@ Log arrests, warrants, MDT edits, duty toggles, use-of-force flags. Logs readabl
 - Prison labor integration
 - Evidence props + forensic system
 - Federal task forces
-- Cross-agency task MDT sharing
+- Cross-agency task force MDT sharing
 
 ### Next Logical Steps
 - DB schema (exact SQL)

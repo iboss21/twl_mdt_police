@@ -4,7 +4,7 @@ Brand: The Land of Wolves | Owner: iBoss | Website: www.wolves.land
 
 ### 1. Product Overview
 - **Platform:** RedM (RDR2)
-- **Framework Compatibility:** Primary: RSG-Core; Secondary: LXR-Core; Optional adapters for VORP
+- **Framework Compatibility:** Primary: RSG-Core; Secondary: LXR-Core; Optional adapters/extensions for VORP
 - **Target Users:** Sheriff Departments, Police Departments, Rangers/Marshals, optional Army/Federal units
 - **Core Goal:** Realistic, performant, abuse-resistant LEO system with law-enforcement gameplay loops, roleplay-first interactions, centralized MDT with persistent data, clear authority separation, no arcade elements, full logging.
 
@@ -75,7 +75,8 @@ Core tables: `leo_officers`, `leo_duty_logs`, `leo_persons`, `leo_records`, `leo
 ### 12. Performance Requirements
 - Zero constant loops; event-driven MDT updates
 - Lazy-load records; server callbacks batched; no client SQL calls
-- Target (aggressive/aspirational): <0.05ms average server impact for core event handler overhead (database operations measured separately); MDT load under 300ms local DB.
+- Target (aggressive/aspirational): <0.05ms average server impact for core event handler overhead (database operations measured separately).
+- Target (MDT load): <300ms against local DB.
 
 ### 13. Configurability
 Everything adjustable via config: agencies, ranks, charges, sentencing rules, MDT permissions, jurisdiction rules; no hardcoded logic.

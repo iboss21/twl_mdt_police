@@ -7,8 +7,16 @@
 local Bridge = nil
 
 CreateThread(function()
-    Bridge = require('bridge')
-    Bridge.Init()
+    local success, err = pcall(function()
+        Bridge = require('bridge')
+        Bridge.Init()
+    end)
+    
+    if not success then
+        print("^1[LEO-CORE] CRITICAL ERROR: Failed to initialize framework bridge^7")
+        print("^1[LEO-CORE] Error: " .. tostring(err) .. "^7")
+        print("^1[LEO-CORE] Please check your Config.Framework setting in config_leo.lua^7")
+    end
 end)
 
 -- ============================================
@@ -216,21 +224,31 @@ AddEventHandler('leo:server:searchPersons', function(query)
     end
     
     Bridge.SearchCharacters(query, function(matches)
-        -- Get additional data for each match
+        -- Get additional data for each match using proper callback chaining
+        local processed = 0
+        local totalMatches = #matches
+        
+        if totalMatches == 0 then
+            TriggerClientEvent('leo:client:searchResults', source, 'persons', matches)
+            return
+        end
+        
         for i, match in ipairs(matches) do
             MySQL.Async.fetchScalar('SELECT COUNT(*) FROM leo_records WHERE citizenid = ?', 
                 {match.citizenid or match.identifier}, function(recordCount)
                 match.recordCount = recordCount or 0
-            end)
-            
-            MySQL.Async.fetchScalar('SELECT COUNT(*) FROM leo_warrants WHERE citizenid = ? AND status = ?', 
-                {match.citizenid or match.identifier, 'active'}, function(warrantCount)
-                match.hasWarrant = warrantCount and warrantCount > 0
+                
+                MySQL.Async.fetchScalar('SELECT COUNT(*) FROM leo_warrants WHERE citizenid = ? AND status = ?', 
+                    {match.citizenid or match.identifier, 'active'}, function(warrantCount)
+                    match.hasWarrant = warrantCount and warrantCount > 0
+                    
+                    processed = processed + 1
+                    if processed >= totalMatches then
+                        TriggerClientEvent('leo:client:searchResults', source, 'persons', matches)
+                    end
+                end)
             end)
         end
-        
-        Wait(100) -- Allow queries to complete
-        TriggerClientEvent('leo:client:searchResults', source, 'persons', matches)
     end)
 end)
 

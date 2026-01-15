@@ -172,10 +172,13 @@ AddEventHandler('leo:client:newBOLO', function(data)
         data = data
     })
     
-    -- Show notification
-    exports['rsg-core']:DrawText(string.format("NEW BOLO: %s", data.title), 'left')
-    Wait(5000)
-    exports['rsg-core']:HideText()
+    -- Show notification (framework-agnostic via NUI)
+    SendNUIMessage({
+        type = "notification",
+        message = string.format("NEW BOLO: %s", data.title),
+        notifType = "warning",
+        duration = 5000
+    })
 end)
 
 -- ============================================

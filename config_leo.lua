@@ -790,8 +790,15 @@ Config.Security = {
 -- DEBUG SETTINGS
 -- ============================================
 Config.Debug = false
-Config.DebugPrint = function(...)
+
+-- Debug logging function (set Config.Debug = true to enable)
+function DebugLog(...)
     if Config.Debug then
-        print("[LEO-CORE]", ...)
+        local args = {...}
+        local message = ""
+        for i, v in ipairs(args) do
+            message = message .. tostring(v) .. " "
+        end
+        print("^3[LEO-CORE DEBUG]^7 " .. message)
     end
 end

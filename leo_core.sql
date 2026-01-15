@@ -308,9 +308,15 @@ CREATE TABLE IF NOT EXISTS `leo_jail_records` (
 -- Migrate existing data from old tables (if they exist)
 -- This allows for backward compatibility during transition
 
+-- Note: Using INSERT IGNORE to handle potential duplicates during migration
+-- If you need to update existing records instead, use:
+-- INSERT INTO ... ON DUPLICATE KEY UPDATE ...
+
+-- Migrate person records
 INSERT IGNORE INTO `leo_persons` (`charidentifier`, `mugshot_url`, `notes`)
 SELECT `char_id`, `mugshot_url`, `notes` FROM `user_mdt` WHERE EXISTS (SELECT 1 FROM `user_mdt`);
 
+-- Migrate reports to records
 INSERT IGNORE INTO `leo_records` (
     `citizenid`, 
     `record_type`, 
@@ -330,6 +336,7 @@ FROM `mdt_reports` r
 LEFT JOIN `characters` c ON c.charidentifier = r.char_id
 WHERE EXISTS (SELECT 1 FROM `mdt_reports`);
 
+-- Migrate warrants
 INSERT IGNORE INTO `leo_warrants` (
     `charidentifier`,
     `citizenid`,
@@ -361,3 +368,19 @@ SELECT
 FROM `mdt_warrants` w
 LEFT JOIN `characters` c ON c.charidentifier = w.char_id
 WHERE EXISTS (SELECT 1 FROM `mdt_warrants`);
+
+-- ============================================
+-- PERFORMANCE OPTIMIZATION NOTES
+-- ============================================
+-- For RSG-Core/LXR-Core with large player tables:
+-- Consider adding computed columns for frequently searched fields:
+-- 
+-- ALTER TABLE players 
+-- ADD COLUMN firstname VARCHAR(100) 
+-- GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(charinfo, '$.firstname'))) STORED,
+-- ADD COLUMN lastname VARCHAR(100) 
+-- GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(charinfo, '$.lastname'))) STORED,
+-- ADD INDEX idx_firstname (firstname),
+-- ADD INDEX idx_lastname (lastname);
+--
+-- This improves search performance by avoiding JSON_EXTRACT in WHERE clauses.

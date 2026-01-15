@@ -176,7 +176,7 @@ AddEventHandler("bucky_mdt:saveOffenderChanges", function(charidentifier, change
 
 		if changes.convictions ~= nil then
 			for conviction, amount in pairs(changes.convictions) do	
-				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `offense` = ? AND `char_id` = ?', {amount, conviction, charidentifier})
+				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `char_id` = ? AND `offense` = ?', {amount, charidentifier, conviction})
 			end
 		end
 

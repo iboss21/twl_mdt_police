@@ -75,10 +75,10 @@ Core tables: `leo_officers`, `leo_duty_logs`, `leo_persons`, `leo_records`, `leo
 ### 12. Performance Requirements
 - Zero constant loops; event-driven MDT updates
 - Lazy-load records; server callbacks batched; no client SQL calls
-- Target (aggressive/aspirational): ideal-case benchmark of <0.05ms average server impact for core event handler overhead (in-handler logic before any DB/HTTP/file I/O) when profiled via resmon; adjust to what your hardware realistically supports.
+- Target (aggressive/aspirational): ideal-case benchmark of <0.1–0.2ms average server impact for core event handler overhead (in-handler logic before any DB/HTTP/file I/O) when profiled via resmon; adjust to what your hardware realistically supports.
 - Baseline target (production): keep average handler overhead under ~1ms with occasional spikes up to ~2ms.
 - Database-driven flows measured separately; 0.5–1ms+ budgets are acceptable under load for DB-backed handlers.
-- Measurement guidance: profile with resmon (default ~1s samples) or txAdmin profiler (adjust to ~1s sampling) over ≥5 minutes of representative duty scenarios (routine patrols, warrant work, 5–10 active officers and 20–30 total players) under typical player load; consider spikes acceptable if <5% of samples exceed the baseline target.
+- Measurement guidance: profile with resmon (default ~1s samples) or txAdmin profiler (set Performance Monitor sampling interval to ~1000ms in settings) over ≥5 minutes of representative duty scenarios (routine patrols, warrant work, 5–10 active officers and 20–30 total players) under typical player load; consider spikes acceptable if <5% of samples exceed the baseline target.
 - Practical guidance: treat the aspirational target as best-case and tune thresholds to maintain stability in production.
 - Target (MDT load): <300ms against local DB.
 

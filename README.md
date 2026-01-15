@@ -1,3 +1,7 @@
+## The Land of Wolves - Police System + MDT
+
+This resource is branded for **The Land of Wolves** (leo-core) and its MDT/Police system. Full product requirements live in [PRD.md](./PRD.md).
+
 ## How to Install?
 
 1. Make sure to ensure bucky_mdt on your resources list. Also disable any other mdt script you are using.

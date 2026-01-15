@@ -76,6 +76,7 @@ Core tables: `leo_officers`, `leo_duty_logs`, `leo_persons`, `leo_records`, `leo
 - Zero constant loops; event-driven MDT updates
 - Lazy-load records; server callbacks batched; no client SQL calls
 - Target (aggressive/aspirational): aim for <0.05ms average server impact for core event handler overhead when profiled via resmon.
+- Baseline target (production): keep average handler overhead under ~1ms with occasional spikes up to ~2ms.
 - Database-driven flows measured separately; 0.5–1ms+ budgets are acceptable under load for DB-backed handlers.
 - Practical guidance: treat the aspirational target as best-case and tune thresholds to maintain stability in production.
 - Target (MDT load): <300ms against local DB.

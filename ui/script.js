@@ -67,7 +67,7 @@ const mdtApp = new Vue({
             id: null,
             date: null,
             title: null,
-            note: null,
+            incident: null,
             author: null,
         },    
         note_search: "",
@@ -535,7 +535,7 @@ document.onreadystatechange = () => {
 
                 mdtApp.modal = null;
             } else if (event.data.type == "returnedNoteDetails") {
-                mdtApp.note_selected = event.data.note;
+                mdtApp.note_selected = event.data.details;
             } else if (event.data.type == "recentReportsAndWarrantsLoaded") {
                 mdtApp.homepage.reports = event.data.reports;
                 mdtApp.homepage.note = event.data.note;

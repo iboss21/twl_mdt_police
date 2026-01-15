@@ -114,6 +114,11 @@ RegisterNUICallback("deleteNote", function(data, cb)
     cb('ok')
 end)
 
+RegisterNUICallback("saveNoteChanges", function(data, cb)
+    TriggerServerEvent("bucky_mdt:saveNoteChanges", data)
+    cb('ok')
+end)
+
 RegisterNUICallback("saveReportChanges", function(data, cb)
     TriggerServerEvent("bucky_mdt:saveReportChanges", data)
     cb('ok')

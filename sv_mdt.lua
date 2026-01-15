@@ -175,8 +175,9 @@ AddEventHandler("bucky_mdt:saveOffenderChanges", function(charidentifier, change
 		end
 
 		if changes.convictions ~= nil then
-			for conviction, count in pairs(changes.convictions) do	
-				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `char_id` = ? AND `offense` = ?', {count, charidentifier, conviction})
+			local char_id = charidentifier
+			for offense, count in pairs(changes.convictions) do	
+				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `char_id` = ? AND `offense` = ?', {count, char_id, offense})
 			end
 		end
 
@@ -228,7 +229,7 @@ AddEventHandler("bucky_mdt:submitNewReport", function(data)
 	end)
 
 	for offense, count in pairs(data.charges) do
-		exports.ghmattimysql:execute('SELECT * FROM `user_convictions` WHERE `offense` = ? AND `char_id` = ?', {offense, data.char_id}, function(result)
+		exports.oxmysql:execute('SELECT * FROM `user_convictions` WHERE `offense` = ? AND `char_id` = ?', {offense, data.char_id}, function(result)
 			if result[1] then
 				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `char_id` = ? AND `offense` = ?', {count + 1, data.char_id, offense})
 			else

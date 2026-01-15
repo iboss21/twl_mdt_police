@@ -78,6 +78,7 @@ Core tables: `leo_officers`, `leo_duty_logs`, `leo_persons`, `leo_records`, `leo
 - Target (aggressive/aspirational): aim for <0.05ms average server impact for core event handler overhead when profiled via resmon.
 - Baseline target (production): keep average handler overhead under ~1ms with occasional spikes up to ~2ms.
 - Database-driven flows measured separately; 0.5–1ms+ budgets are acceptable under load for DB-backed handlers.
+- Measurement guidance: profile with resmon/txAdmin over ≥5 minutes of representative duty scenarios under typical player load; consider spikes acceptable if <5% of samples exceed the baseline target.
 - Practical guidance: treat the aspirational target as best-case and tune thresholds to maintain stability in production.
 - Target (MDT load): <300ms against local DB.
 

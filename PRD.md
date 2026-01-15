@@ -1,6 +1,6 @@
 ## The Land of Wolves - Police System + MDT (leo-core)
 
-Brand/Owner: www.wolves.land / iBoss
+Brand: The Land of Wolves | Owner: iBoss | Website: www.wolves.land
 
 ### 1. Product Overview
 - **Platform:** RedM (RDR2)
@@ -75,7 +75,7 @@ Core tables: `leo_officers`, `leo_duty_logs`, `leo_persons`, `leo_records`, `leo
 ### 12. Performance Requirements
 - Zero constant loops; event-driven MDT updates
 - Lazy-load records; server callbacks batched; no client SQL calls
-- Target (aggressive): <0.05ms average server impact; MDT load under 300ms local DB.
+- Target (aggressive/aspirational): <0.05ms average server impact for core event handlers (excluding DB latency); MDT load under 300ms local DB.
 
 ### 13. Configurability
 Everything adjustable via config: agencies, ranks, charges, sentencing rules, MDT permissions, jurisdiction rules; no hardcoded logic.

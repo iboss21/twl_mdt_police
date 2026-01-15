@@ -175,8 +175,9 @@ AddEventHandler("bucky_mdt:saveOffenderChanges", function(charidentifier, change
 		end
 
 		if changes.convictions ~= nil then
-			for conviction, amount in pairs(changes.convictions) do	
-				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `char_id` = ? AND `offense` = ?', {charidentifier, amount, conviction})
+			local char_id = charidentifier
+			for offense, count in pairs(changes.convictions) do	
+				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `char_id` = ? AND `offense` = ?', {count, char_id, offense})
 			end
 		end
 
@@ -190,7 +191,7 @@ end)
 
 RegisterServerEvent("bucky_mdt:saveReportChanges")
 AddEventHandler("bucky_mdt:saveReportChanges", function(data)
-	exports.oxmysql:execute('UPDATE `mdt_reports` SET `title` = ?, `incident` = ? WHERE `id` = ?', {data.id, data.title, data.incident})
+	exports.oxmysql:execute('UPDATE `mdt_reports` SET `title` = ?, `incident` = ? WHERE `id` = ?', {data.title, data.incident, data.id})
 	TriggerClientEvent("bucky_mdt:sendNotification", source, Config.Notify['2'])
 end)
 
@@ -204,6 +205,12 @@ RegisterServerEvent("bucky_mdt:deleteNote")
 AddEventHandler("bucky_mdt:deleteNote", function(id)
 	exports.oxmysql:execute('DELETE FROM `mdt_notes` WHERE `id` = ?', {id})
 	TriggerClientEvent("bucky_mdt:sendNotification", source, Config.Notify['9'])
+end)
+
+RegisterServerEvent("bucky_mdt:saveNoteChanges")
+AddEventHandler("bucky_mdt:saveNoteChanges", function(data)
+	exports.oxmysql:execute('UPDATE `mdt_notes` SET `title` = ?, `incident` = ? WHERE `id` = ?', {data.title, data.incident, data.id})
+	TriggerClientEvent("bucky_mdt:sendNotification", source, Config.Notify['8'])
 end)
 
 RegisterServerEvent("bucky_mdt:submitNewReport")
@@ -222,9 +229,9 @@ AddEventHandler("bucky_mdt:submitNewReport", function(data)
 	end)
 
 	for offense, count in pairs(data.charges) do
-		exports.ghmattimysql:execute('SELECT * FROM `user_convictions` WHERE `offense` = ? AND `char_id` = ?', {offense, data.char_id}, function(result)
+		exports.oxmysql:execute('SELECT * FROM `user_convictions` WHERE `offense` = ? AND `char_id` = ?', {offense, data.char_id}, function(result)
 			if result[1] then
-				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `offense` = ? AND `char_id` = ?', {data.char_id, offense, count + 1})
+				exports.oxmysql:execute('UPDATE `user_convictions` SET `count` = ? WHERE `char_id` = ? AND `offense` = ?', {count + 1, data.char_id, offense})
 			else
 				exports.oxmysql:insert('INSERT INTO `user_convictions` (`char_id`, `offense`, `count`) VALUES (?, ?, ?)', {data.char_id, offense, count})
 			end

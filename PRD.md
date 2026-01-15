@@ -75,7 +75,9 @@ Core tables: `leo_officers`, `leo_duty_logs`, `leo_persons`, `leo_records`, `leo
 ### 12. Performance Requirements
 - Zero constant loops; event-driven MDT updates
 - Lazy-load records; server callbacks batched; no client SQL calls
-- Target (aggressive/aspirational): aim for <0.05ms average server impact for core event handler overhead when profiled via resmon (database operations measured separately; 0.5–1ms+ budgets are acceptable under load and should be treated as practical targets).
+- Target (aggressive/aspirational): aim for <0.05ms average server impact for core event handler overhead when profiled via resmon.
+- Database-driven flows measured separately; 0.5–1ms+ budgets are acceptable under load for DB-backed handlers.
+- Practical guidance: treat the aspirational target as best-case and tune thresholds to maintain stability in production.
 - Target (MDT load): <300ms against local DB.
 
 ### 13. Configurability

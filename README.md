@@ -4,7 +4,7 @@ This resource is branded for **The Land of Wolves** (leo-core) and its MDT/Polic
 
 ## How to Install?
 
-1. Ensure this resource (leo-core MDT) is on your resources list, and also disable any other MDT script you are using.
+1. Ensure this resource (leo-core MDT) is on your resources list and disable any other MDT script you are using.
 2. Run the user_mdt SQL in your database.
 3. Inside the config you will be able to change the jobs required to use the MDT.
 4. To bring up the MDT use /mdt in chat (this can be changed in config) and it'll bring up the MDT with an animation as if you were pulling out a notebook or notepad.

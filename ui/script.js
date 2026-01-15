@@ -348,7 +348,7 @@ const mdtApp = new Vue({
                 id: null,
                 date: null,
                 title: null,
-                note: null,
+                incident: null,
                 author: null
             };
             this.note_results = {
